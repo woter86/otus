@@ -2,6 +2,7 @@ package ru.balovin.spring.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
