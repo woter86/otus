@@ -8,12 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.balovin.spring.domain.Question;
-import ru.balovin.spring.service.GreetingServiceImpl;
 import ru.balovin.spring.service.QuestionParser;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @DisplayName("Класс QuestionDaoSimpleTest")
@@ -38,5 +37,11 @@ class QuestionDaoSimpleTest {
     @DisplayName(" хороший csv файл")
     @Test
     void validCSV() {
+        List<Question> questionList = List.of(new Question("Who am i?", null, -1));
+        given(questionParser.getAll()).willReturn(questionList);
+        List<Question> actualList = questionDao.getAll();
+        assertThat(actualList)
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyInAnyOrderElementsOf(questionList);
     }
 }
