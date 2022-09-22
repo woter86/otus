@@ -1,0 +1,4 @@
+parser:
+  filename: questions.csv
+examinator:
+  threshold: 4
