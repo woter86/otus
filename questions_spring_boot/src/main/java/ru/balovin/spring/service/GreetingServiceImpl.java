@@ -3,7 +3,7 @@ package ru.balovin.spring.service;
 import org.springframework.stereotype.Service;
 import ru.balovin.spring.domain.Student;
 
-@Service
+//@Service
 public class GreetingServiceImpl implements GreetingService{
     private final IOService ioService;
 

@@ -1,10 +1,10 @@
 spring:
   messages:
-    basename: "questions"
+    basename: "i18n/greeting"
     encoding: "UTF-8"
 parser:
   filename: questions.csv
 examinator:
   threshold: 4
 application:
-  locale: en
+  locale: ru_RU

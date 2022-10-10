@@ -1,14 +1,16 @@
 package ru.balovin.spring.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.balovin.spring.domain.Question;
 import ru.balovin.spring.domain.Student;
 
 import java.util.List;
+import java.util.Locale;
 
-//@Service
-public class StudentExaminator implements Examinator {
+@Service
+public class LocalStudentExaminator implements Examinator {
     private final QuestionService questionService;
 
     private final int threshold;
@@ -18,13 +20,17 @@ public class StudentExaminator implements Examinator {
     private final GreetingService greetingService;
 
     private final IOService ioService;
+    private final MessageSource messageSource;
+private final Locale locale;
 
-    public StudentExaminator(QuestionService questionService, @Value("${examinator.threshold:3}") int threshold, Asker asker, GreetingService greetingService, IOService ioService) {
+    public LocalStudentExaminator(QuestionService questionService, @Value("${examinator.threshold:3}") int threshold, Asker asker, GreetingService greetingService, IOService ioService, MessageSource messageSource, @Value("${application.locale}") Locale locale) {
         this.questionService = questionService;
         this.threshold = threshold;
         this.asker = asker;
         this.greetingService = greetingService;
         this.ioService = ioService;
+        this.messageSource = messageSource;
+        this.locale = locale;
     }
 
     @Override
@@ -38,10 +44,10 @@ public class StudentExaminator implements Examinator {
         }
 
         if (validAnswer < threshold) {
-            ioService.out( "" + student.getSurname());
-            ioService.out("Your ball is " + validAnswer + ", but threshold is " + threshold);
+            ioService.out( messageSource.getMessage("result.bad", new String[]{student.getSurname()}, locale));
+            ioService.out(messageSource.getMessage("result.ball", new String[]{String.valueOf(validAnswer), String.valueOf(threshold)}, locale));
         } else {
-            ioService.out( "" + student.getName());
+            ioService.out( messageSource.getMessage("result.good", new String[]{student.getName()}, locale));
         }
     }
 }
