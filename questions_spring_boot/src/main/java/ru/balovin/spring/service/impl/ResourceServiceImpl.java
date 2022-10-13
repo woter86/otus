@@ -1,7 +1,8 @@
-package ru.balovin.spring.service;
+package ru.balovin.spring.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.balovin.spring.dao.ResourceDao;
+import ru.balovin.spring.service.ResourceService;
 
 import java.io.InputStream;
 

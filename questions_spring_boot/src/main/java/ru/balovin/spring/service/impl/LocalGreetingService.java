@@ -1,9 +1,11 @@
-package ru.balovin.spring.service;
+package ru.balovin.spring.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.balovin.spring.domain.Student;
+import ru.balovin.spring.service.GreetingService;
+import ru.balovin.spring.service.IOService;
 
 import java.util.Locale;
 
