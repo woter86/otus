@@ -1,0 +1,10 @@
+spring:
+  messages:
+    basename: "i18n/greeting"
+    encoding: "UTF-8"
+parser:
+  filename: questions.csv
+examinator:
+  threshold: 4
+application:
+  locale: ru_RU
