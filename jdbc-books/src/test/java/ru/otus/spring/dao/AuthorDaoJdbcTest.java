@@ -6,13 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.domain.Person;
+import ru.otus.spring.domain.Author;
 
 import java.util.List;
 
@@ -20,16 +16,16 @@ import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Dao для работы с пёрсонами должно")
 @JdbcTest
-@Import(PersonDaoJdbc.class)
+@Import(AuthorDaoJdbc.class)
 //@Transactional(propagation = Propagation.NOT_SUPPORTED)
-class PersonDaoJdbcTest {
+class AuthorDaoJdbcTest {
 
     private static final int EXPECTED_PERSONS_COUNT = 1;
     private static final int EXISTING_PERSON_ID = 1;
     private static final String EXISTING_PERSON_NAME = "Ivan";
 
     @Autowired
-    private PersonDaoJdbc personDao;
+    private AuthorDaoJdbc personDao;
 
     @BeforeTransaction
     void beforeTransaction(){
@@ -53,18 +49,18 @@ class PersonDaoJdbcTest {
     @DisplayName("добавлять пёрсона в БД")
     @Test
     void shouldInsertPerson() {
-        Person expectedPerson = new Person(2, "Igor");
-        personDao.insert(expectedPerson);
-        Person actualPerson = personDao.getById(expectedPerson.getId());
-        assertThat(actualPerson).usingRecursiveComparison().isEqualTo(expectedPerson);
+        Author expectedAuthor = new Author(2, "Igor");
+        personDao.insert(expectedAuthor);
+        Author actualAuthor = personDao.getById(expectedAuthor.getId());
+        assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
     @DisplayName("возвращать ожидаемого пёрсона по его id")
     @Test
     void shouldReturnExpectedPersonById() {
-        Person expectedPerson = new Person(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
-        Person actualPerson = personDao.getById(expectedPerson.getId());
-        assertThat(actualPerson).usingRecursiveComparison().isEqualTo(expectedPerson);
+        Author expectedAuthor = new Author(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
+        Author actualAuthor = personDao.getById(expectedAuthor.getId());
+        assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
     @DisplayName("удалять заданного пёрсона по его id")
@@ -82,9 +78,9 @@ class PersonDaoJdbcTest {
     @DisplayName("возвращать ожидаемый список пёрсонов")
     @Test
     void shouldReturnExpectedPersonsList() {
-        Person expectedPerson = new Person(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
-        List<Person> actualPersonList = personDao.getAll();
-        assertThat(actualPersonList)
-                .containsExactlyInAnyOrder(expectedPerson);
+        Author expectedAuthor = new Author(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
+        List<Author> actualAuthorList = personDao.getAll();
+        assertThat(actualAuthorList)
+                .containsExactlyInAnyOrder(expectedAuthor);
     }
 }
