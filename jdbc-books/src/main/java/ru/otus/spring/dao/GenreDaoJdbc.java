@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,62 +16,64 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class AuthorDaoJdbc implements AuthorDao {
+public class GenreDaoJdbc implements GenreDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
     @Override
     public int count() {
-        Integer count = namedParameterJdbcOperations.queryForObject("select count(*) from authors", new HashMap<>(1), Integer.class);
+        Integer count = namedParameterJdbcOperations.queryForObject("select count(*) from genres", new HashMap<>(1), Integer.class);
         return count == null ? 0 : count;
     }
 
     @Override
-    public long  insert(Author author) {
+    public long insert(Genre genre) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("name", author.getName());
-        namedParameterJdbcOperations.update("insert ignore into authors(`name`) values (:name)",
+        params.addValue("name", genre.getName());
+
+        namedParameterJdbcOperations.update("insert ignore into genres (name) values (:name)",
                 params, keyHolder);
         if (keyHolder.getKey() != null)
             return keyHolder.getKey().longValue();
         else
             return namedParameterJdbcOperations.queryForObject("select id from authors where name=:author_name",
                     params, Long.class);
+
     }
 
     @Override
-    public Author getById(long id) {
+    public Genre getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name from authors where id = :id", params, new AuthorMapper()
+                "select id, name from genres where id = :id", params, new GenreMapper()
         );
     }
 
     @Override
-    public List<Author> getAll() {
-        return namedParameterJdbcOperations.query("select id, name from authors", new AuthorMapper());
+    public List<Genre> getAll() {
+        return namedParameterJdbcOperations.query("select id, name from genres", new GenreMapper());
     }
 
     @Override
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
-                "delete from authors where id = :id", params
+                "delete from genres where id = :id", params
         );
     }
 
-    private static class AuthorMapper implements RowMapper<Author> {
+    private static class GenreMapper implements RowMapper<Genre> {
 
         @Override
-        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
+        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
-            return new Author(id, name);
+            return new Genre(id, name);
         }
     }
 }

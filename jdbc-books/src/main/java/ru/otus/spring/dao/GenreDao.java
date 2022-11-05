@@ -1,6 +1,6 @@
 package ru.otus.spring.dao;
 
-import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Genre;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ public interface GenreDao {
 
     int count();
 
-    void insert(Author author);
+    long insert(Genre genre);
 
-    Author getById(long id);
+    Genre getById(long id);
 
-    List<Author> getAll();
+    List<Genre> getAll();
 
     void deleteById(long id);
 }

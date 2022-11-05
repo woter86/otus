@@ -1,11 +1,12 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb2
+    url: jdbc:h2:mem:testdb2;MODE=MySQL;
   sql:
     init:
       mode: always
       data-locations: data.sql
       schema-locations: schema.sql
+
   h2:
     console:
       path: /h2-console

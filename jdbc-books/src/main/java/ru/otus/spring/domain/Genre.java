@@ -8,4 +8,9 @@ import lombok.RequiredArgsConstructor;
 public class Genre {
     private final long id;
     private final String name;
+
+    public Genre(String name) {
+        this.id = -1; // only for insert
+        this.name = name;
+    }
 }
