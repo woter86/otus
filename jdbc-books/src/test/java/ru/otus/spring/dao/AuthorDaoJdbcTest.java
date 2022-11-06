@@ -3,84 +3,74 @@ package ru.otus.spring.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.test.context.transaction.BeforeTransaction;
 import ru.otus.spring.domain.Author;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("Dao для работы с пёрсонами должно")
+@DisplayName("Dao для работы с авторами должно")
 @JdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(AuthorDaoJdbc.class)
-//@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class AuthorDaoJdbcTest {
 
-    private static final int EXPECTED_PERSONS_COUNT = 1;
-    private static final int EXISTING_PERSON_ID = 1;
-    private static final String EXISTING_PERSON_NAME = "Ivan";
+    private static final int EXPECTED_AUTHORS_COUNT = 2;
+    private static final long EXPECTED_AUTHORS_ID = 3;
+    private static final int EXISTING_AUTHOR_ID = 1;
+    private static final String EXISTING_AUTHOR_NAME = "Marshak";
 
     @Autowired
-    private AuthorDaoJdbc personDao;
+    private AuthorDaoJdbc authorDao;
 
-    @BeforeTransaction
-    void beforeTransaction(){
-        System.out.println("beforeTransaction");
-    }
 
-    @AfterTransaction
-    void afterTransaction(){
-        System.out.println("afterTransaction");
-    }
-
-    @DisplayName("возвращать ожидаемое количество пёрсонов в БД")
+    @DisplayName("возвращать ожидаемое количество авторов в БД")
     @Test
-    void shouldReturnExpectedPersonCount() {
-        int actualPersonsCount = personDao.count();
-        assertThat(actualPersonsCount).isEqualTo(EXPECTED_PERSONS_COUNT);
+    void shouldReturnExpectedCount() {
+        int actualCount = authorDao.count();
+        assertThat(actualCount).isEqualTo(EXPECTED_AUTHORS_COUNT);
     }
 
-    //@Rollback(value = false)
-    //@Commit
-    @DisplayName("добавлять пёрсона в БД")
+    @DisplayName("добавлять автора в БД")
     @Test
-    void shouldInsertPerson() {
-        Author expectedAuthor = new Author(2, "Igor");
-        personDao.insert(expectedAuthor);
-        Author actualAuthor = personDao.getById(expectedAuthor.getId());
+    void shouldInsert() {
+        Author expectedAuthor = new Author(EXPECTED_AUTHORS_ID, "Igor");
+        long id = authorDao.insert(expectedAuthor);
+        Author actualAuthor = authorDao.getById(id);
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
-    @DisplayName("возвращать ожидаемого пёрсона по его id")
+    @DisplayName("возвращать ожидаемого автора по его id")
     @Test
-    void shouldReturnExpectedPersonById() {
-        Author expectedAuthor = new Author(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
-        Author actualAuthor = personDao.getById(expectedAuthor.getId());
+    void shouldReturnExpectedAuthorById() {
+        Author expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+        Author actualAuthor = authorDao.getById(expectedAuthor.getId());
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
-    @DisplayName("удалять заданного пёрсона по его id")
+    @DisplayName("удалять заданного автора по id")
     @Test
-    void shouldCorrectDeletePersonById() {
-        assertThatCode(() -> personDao.getById(EXISTING_PERSON_ID))
+    void shouldCorrectDeleteAuthorById() {
+        assertThatCode(() -> authorDao.getById(EXISTING_AUTHOR_ID))
                 .doesNotThrowAnyException();
 
-        personDao.deleteById(EXISTING_PERSON_ID);
+        authorDao.deleteById(EXISTING_AUTHOR_ID);
 
-        assertThatThrownBy(() -> personDao.getById(EXISTING_PERSON_ID))
+        assertThatThrownBy(() -> authorDao.getById(EXISTING_AUTHOR_ID))
                 .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
-    @DisplayName("возвращать ожидаемый список пёрсонов")
+    @DisplayName("возвращать ожидаемый список авторов")
     @Test
-    void shouldReturnExpectedPersonsList() {
-        Author expectedAuthor = new Author(EXISTING_PERSON_ID, EXISTING_PERSON_NAME);
-        List<Author> actualAuthorList = personDao.getAll();
+    void shouldReturnExpectedAuthorsList() {
+        Author expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+        List<Author> actualAuthorList = authorDao.getAll();
         assertThat(actualAuthorList)
                 .containsExactlyInAnyOrder(expectedAuthor);
     }
+
 }

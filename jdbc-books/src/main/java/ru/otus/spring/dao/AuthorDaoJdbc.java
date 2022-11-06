@@ -31,7 +31,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public long  insert(Author author) {
+    public long insert(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", author.getName());
@@ -40,7 +40,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         if (keyHolder.getKey() != null)
             return keyHolder.getKey().longValue();
         else
-            return namedParameterJdbcOperations.queryForObject("select id from authors where name=:author_name",
+            return namedParameterJdbcOperations.queryForObject("select id from authors where name=:name",
                     params, Long.class);
     }
 
