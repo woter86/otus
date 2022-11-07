@@ -50,7 +50,7 @@ public class BookDaoJdbc implements BookDao {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
                 "select book.id, book.name, book.genre_id, book.author_id, author.name authorName, genre.name genreName " +
-                        "from (books book join authors author on book.author_id = author.id) " +
+                        "from books book join authors author on book.author_id = author.id " +
                         "join genres genre on book.genre_id = genre.id " +
                         "where book.id = :id",params, new BookMapper()
         );
