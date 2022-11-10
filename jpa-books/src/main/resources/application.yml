@@ -15,6 +15,11 @@ spring:
   shell:
     interactive:
       enabled: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
 
+    show-sql: true
 
 

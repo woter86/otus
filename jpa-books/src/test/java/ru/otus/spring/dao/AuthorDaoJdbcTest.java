@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("Dao для работы с авторами должно")
 @JdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(AuthorDaoJdbc.class)
+@Import(AuthorDaoJPA.class)
 class AuthorDaoJdbcTest {
 
     private static final int EXPECTED_AUTHORS_COUNT = 2;
@@ -25,7 +25,7 @@ class AuthorDaoJdbcTest {
     private static final String EXISTING_AUTHOR_NAME = "Marshak";
 
     @Autowired
-    private AuthorDaoJdbc authorDao;
+    private AuthorDaoJPA authorDao;
 
 
     @DisplayName("возвращать ожидаемое количество авторов в БД")
@@ -38,9 +38,8 @@ class AuthorDaoJdbcTest {
     @DisplayName("добавлять автора в БД")
     @Test
     void shouldInsert() {
-        Author expectedAuthor = new Author(EXPECTED_AUTHORS_ID, "Igor");
-        long id = authorDao.insert(expectedAuthor);
-        Author actualAuthor = authorDao.getById(id);
+        Author expectedAuthor = new Author( "Igor");
+        Author actualAuthor =  authorDao.save(expectedAuthor);
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 

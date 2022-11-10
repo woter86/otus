@@ -1,6 +1,7 @@
 package ru.otus.spring.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.AuthorDao;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.GenreDao;
@@ -9,6 +10,7 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,29 +24,39 @@ public class BookServiceImpl implements BookService {
         this.genreDao = genreDao;
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public long count() {
         return bookDao.count();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookDao.getAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Book getById(long id) {
+    public Optional<Book> getById(long id) {
         return bookDao.getById(id);
     }
 
+    @Transactional
     @Override
-    public long insert(String name, String author, String genre) {
-        long author_id = authorDao.insert(new Author(author));
-        long genre_id = genreDao.insert(new Genre(genre));
-        return bookDao.insert(new Book(name, authorDao.getById(author_id), genreDao.getById(genre_id)));
+    public Book save(String name, String authorName, String genreName) {
+        Author author = authorDao.findByName(authorName);
+        if (author == null) {
+            author = new Author(authorName);
+        }
+        Genre genre = genreDao.findByName(genreName);
+        if (genre == null) {
+            genre = new Genre(genreName);
+        }
+        return bookDao.save(new Book(name, author, genre));
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
         bookDao.deleteById(id);

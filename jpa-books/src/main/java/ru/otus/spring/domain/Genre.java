@@ -3,14 +3,21 @@ package ru.otus.spring.domain;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.*;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Data
+@Entity
+@Table(name = "genres")
 public class Genre {
-    private final long id;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "name")
+    private String name;
 
     public Genre(String name) {
-        this.id = -1; // only for insert
         this.name = name;
     }
 }

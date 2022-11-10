@@ -3,16 +3,19 @@ package ru.otus.spring.dao;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
 
-    int count();
+    long count();
 
-    long insert(Genre genre);
+    Genre save(Genre genre);
 
-    Genre getById(long id);
+    Optional<Genre> getById(long id);
 
     List<Genre> getAll();
 
     void deleteById(long id);
+
+    Genre findByName(String name);
 }

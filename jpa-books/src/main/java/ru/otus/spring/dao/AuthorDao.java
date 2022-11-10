@@ -3,16 +3,19 @@ package ru.otus.spring.dao;
 import ru.otus.spring.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorDao {
 
-    int count();
+    long count();
 
-    long insert(Author author);
+    Author save(Author author);
 
-    Author getById(long id);
+    Optional<Author> getById(long id);
 
     List<Author> getAll();
 
     void deleteById(long id);
+
+    Author findByName(String name);
 }
