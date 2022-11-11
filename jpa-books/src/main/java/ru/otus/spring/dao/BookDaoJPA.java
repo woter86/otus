@@ -35,7 +35,7 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public Optional<Book> getById(long id) {
-        return Optional.of(em.find(Book.class, id));
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
     @Override

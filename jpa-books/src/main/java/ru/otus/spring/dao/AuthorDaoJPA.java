@@ -34,7 +34,7 @@ public class AuthorDaoJPA implements AuthorDao {
 
     @Override
     public Optional<Author> getById(long id) {
-        return Optional.of(em.find(Author.class, id));
+        return Optional.ofNullable(em.find(Author.class, id));
     }
 
     @Override

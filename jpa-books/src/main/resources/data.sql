@@ -14,3 +14,10 @@ insert into books (`name`, `author_id`, `genre_id`)
 values ('Otcy i deti', 2, 2);
 
 
+insert into comments(`comment`, `book_id`)
+values ('cool', 1);
+
+insert into comments(`comment`, `book_id`)
+values ('nice', 2);
+
+

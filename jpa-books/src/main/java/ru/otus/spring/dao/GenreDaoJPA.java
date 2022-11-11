@@ -34,7 +34,7 @@ public class GenreDaoJPA implements GenreDao {
 
     @Override
     public Optional<Genre> getById(long id) {
-        return Optional.of(em.find(Genre.class, id));
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
