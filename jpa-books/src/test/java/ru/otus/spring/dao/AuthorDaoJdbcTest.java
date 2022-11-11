@@ -11,8 +11,7 @@ import ru.otus.spring.domain.Author;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с авторами должно")
 @DataJpaTest
@@ -31,6 +30,7 @@ class AuthorDaoJdbcTest {
 
     @Autowired
     private TestEntityManager em;
+
     @DisplayName("возвращать ожидаемое количество авторов в БД")
     @Test
     void shouldReturnExpectedCount() {
@@ -41,8 +41,8 @@ class AuthorDaoJdbcTest {
     @DisplayName("добавлять автора в БД")
     @Test
     void shouldInsert() {
-        Author expectedAuthor = new Author( "Igor");
-        Author actualAuthor =  authorDao.save(expectedAuthor);
+        Author expectedAuthor = new Author("Igor");
+        Author actualAuthor = authorDao.save(expectedAuthor);
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 

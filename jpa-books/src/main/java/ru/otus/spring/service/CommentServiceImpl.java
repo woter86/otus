@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
     private final BookDao bookDao;
+
     public CommentServiceImpl(CommentDao commentDao, BookDao bookDao) {
         this.commentDao = commentDao;
         this.bookDao = bookDao;
