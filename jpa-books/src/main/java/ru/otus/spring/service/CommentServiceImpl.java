@@ -9,6 +9,7 @@ import ru.otus.spring.domain.Comment;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -20,28 +21,25 @@ public class CommentServiceImpl implements CommentService {
         this.bookDao = bookDao;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public long count() {
         return commentDao.count();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Comment> getAll() {
         return commentDao.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<Comment> getById(long id) {
         return commentDao.getById(id);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Comment> getByBookId(long bookId) {
-        return commentDao.getByBookId(bookId);
+        List<Comment> allComments = commentDao.getAll();
+        return allComments.stream().filter(c -> c.getBook().getId() == bookId).collect(Collectors.toList());
     }
 
     @Transactional

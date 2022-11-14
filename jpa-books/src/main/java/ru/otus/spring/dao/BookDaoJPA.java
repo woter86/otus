@@ -1,13 +1,16 @@
 package ru.otus.spring.dao;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.domain.Book;
 
-import javax.persistence.*;
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class BookDaoJPA implements BookDao {
     @PersistenceContext
     private final EntityManager em;
@@ -48,10 +51,9 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Book b " +
-                "where b.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Book book = em.find(Book.class, id);
+        if (book != null) {
+            em.remove(book);
+        }
     }
 }

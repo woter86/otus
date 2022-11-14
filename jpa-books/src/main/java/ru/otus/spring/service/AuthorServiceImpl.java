@@ -16,19 +16,16 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorDao = authorDao;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public long count() {
         return authorDao.count();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Author> getAll() {
         return authorDao.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<Author> getById(long id) {
         return authorDao.getById(id);

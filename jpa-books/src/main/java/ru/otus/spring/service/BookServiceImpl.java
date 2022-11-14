@@ -24,19 +24,16 @@ public class BookServiceImpl implements BookService {
         this.genreDao = genreDao;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public long count() {
         return bookDao.count();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookDao.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<Book> getById(long id) {
         return bookDao.getById(id);

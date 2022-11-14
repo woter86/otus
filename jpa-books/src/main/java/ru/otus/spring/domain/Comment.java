@@ -15,13 +15,16 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "comment")
     private String comment;
 
+
     @Fetch(value = FetchMode.JOIN)
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "book_id")
     private Book book;
+
 
     public Comment(Book book, String comment) {
         this.book = book;

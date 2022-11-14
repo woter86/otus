@@ -1,13 +1,16 @@
 package ru.otus.spring.dao;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.domain.Author;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class AuthorDaoJPA implements AuthorDao {
     @PersistenceContext
     private final EntityManager em;
@@ -45,11 +48,10 @@ public class AuthorDaoJPA implements AuthorDao {
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Author a " +
-                "where a.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+        }
     }
 
     @Override

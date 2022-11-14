@@ -1,13 +1,13 @@
 package ru.otus.spring.dao;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.domain.Genre;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class GenreDaoJPA implements GenreDao {
     @PersistenceContext
     private final EntityManager em;
