@@ -2,8 +2,6 @@ package ru.otus.spring.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -20,7 +18,7 @@ public class Comment {
     private String comment;
 
 
-    @Fetch(value = FetchMode.JOIN)
+    //    @Fetch(value = FetchMode.JOIN)
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "book_id")
     private Book book;
@@ -31,4 +29,12 @@ public class Comment {
         this.comment = comment;
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", comment='" + comment + '\'' +
+                ", book_id=" + book.getId() +
+                '}';
+    }
 }
