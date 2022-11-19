@@ -28,7 +28,7 @@ class BookServiceImplTest {
     private static final long EXISTING_BOOK_ID = 1;
     private static final Book EXPECTED_BOOK = new Book(1L, "Rasskaz o neizvestnom geroe",
             new Author(1, "Marshak"),
-            new Genre(1, "Poem"));
+            new Genre(1, "Poem"), null);
     @MockBean
     private BookDao bookDao;
     @MockBean
@@ -49,15 +49,15 @@ class BookServiceImplTest {
     @Test
     void getAll() {
         List<Book> expected_books = List.of(
-                new Book(1L, "Rasskaz o neizvestnom geroe", new Author(1, "Marshak"), new Genre(1, "Poem")),
-                new Book(2L, "Otcy i deti", new Author(2, "Tolstoy"), new Genre(2, "Roman")));
-        given(bookDao.getAll()).willReturn(expected_books);
+                new Book(1L, "Rasskaz o neizvestnom geroe", new Author(1, "Marshak"), new Genre(1, "Poem"), null),
+                new Book(2L, "Otcy i deti", new Author(2, "Tolstoy"), new Genre(2, "Roman"), null));
+        given(bookDao.findAll()).willReturn(expected_books);
         Assertions.assertThat(bookService.getAll()).isEqualTo(expected_books);
     }
 
     @Test
     void getById() {
-        given(bookDao.getById(EXISTING_BOOK_ID)).willReturn(Optional.of(EXPECTED_BOOK));
+        given(bookDao.findById(EXISTING_BOOK_ID)).willReturn(Optional.of(EXPECTED_BOOK));
         Assertions.assertThat(bookService.getById(EXISTING_BOOK_ID)).isEqualTo(Optional.of(EXPECTED_BOOK));
     }
 
@@ -83,7 +83,7 @@ class BookServiceImplTest {
     @Test
     void deleteById() {
         bookService.deleteById(EXISTING_BOOK_ID);
-        given(bookDao.getById(EXISTING_BOOK_ID)).willReturn(Optional.ofNullable(null));
+        given(bookDao.findById(EXISTING_BOOK_ID)).willReturn(Optional.ofNullable(null));
         Assertions.assertThat(bookService.getById(EXISTING_BOOK_ID)).isEqualTo(Optional.ofNullable(null));
     }
 }
