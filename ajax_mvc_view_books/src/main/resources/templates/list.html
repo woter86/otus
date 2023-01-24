@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .books tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .books td:last-child, td:first-child {
+            width: 50px;
+        }
+
+
+    </style>
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h3>Books:</h3>
+
+<a href="edit.html">Add book</a>
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $.get('/api/books').done(function (books) {
+            books.forEach(function (book) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.name}</td>
+                        <td>${book.author.name}</td>
+                        <td>${book.genre.name}</td>
+                        <td>
+                             <a onclick="edit(${book.id})">Edit</a>
+                             <a onclick="del(${book.id})">Delete</a>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+    function edit(id){
+        window.location.href = "edit.html?id=" + id;
+    }
+    function del(id){
+        $.ajax({
+            url: '/api/books/' + id,
+            type: 'delete',
+            success: function (data) {
+                window.location.href = "/";
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>
